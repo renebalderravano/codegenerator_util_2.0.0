@@ -1,0 +1,12 @@
+:host ::ng-deep .p-menuitem {
+  border: 2px black;
+  border-style: dashed;
+  padding: 2px;
+}
+
+.custom-menu {
+  position: absolute;
+  top: 50px;
+  left: 100px;
+  z-index: 1000; /* Adjust z-index if needed */
+}

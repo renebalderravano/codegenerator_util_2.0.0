@@ -1,0 +1,41 @@
+<c-row ngPreserveWhitespaces>
+
+  <c-col xs="12">
+    <c-card class="mb-4">
+      <c-card-header>
+        <strong>CAMEL_CASE_CAP[tableName]</strong> <small></small>
+      </c-card-header>
+      <c-card-body>
+        <table
+            [hover]="true"
+            [responsive]="true"
+            [striped]="true"
+            align="middle"
+            cTable
+            class="mb-0 border"
+          >
+            <thead class="text-nowrap text-truncate">
+            <tr>             
+[columnsTable]
+            </tr>
+            </thead>
+            <tbody *ngIf="isLoading">
+              <tr>
+                <th colspan="6" style="text-align: center;">
+                    <i class="spinner-grow spinner-grow-sm"></i>
+                    <span class="m-1">Loading...</span>
+                </th>                
+              </tr>            
+            </tbody>
+            <tbody *ngIf="!isLoading">
+              <tr *ngFor="let CAMEL_CASE[tableName] of CAMEL_CASE[tableName]s"  style="cursor: pointer;">
+               
+[fields_row]
+              </tr>            
+            </tbody>
+          </table>
+      </c-card-body>
+    </c-card>
+  </c-col>
+ 
+</c-row>

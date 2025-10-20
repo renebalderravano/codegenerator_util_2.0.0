@@ -1,0 +1,24 @@
+
+@media (max-width: 992px) {
+    .layout-wrapper .layout-main-container {
+        margin-left: 0;
+        padding-left: 20rem !important;
+    }
+}
+.layout-main-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    justify-content: space-between;
+    padding: 4rem 2rem 0 2rem;
+    transition: margin-left var(--layout-section-transition-duration);
+}
+
+.layout-main {
+    flex: 1 1 auto;
+    padding-bottom: 2rem;
+}
+
+img {
+    max-width: none !important;
+}

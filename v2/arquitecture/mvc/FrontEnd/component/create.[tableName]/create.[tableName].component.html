@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-9">
+            <h2>CAMEL_CASE_CAP[tableName]</h2>
+        </div>
+        <div class="col-sm-1" style="margin-right: 5px;" >
+            <a (click)="save()" class="btn btn-primary" >Save</a>
+        </div>
+        <div class="col-sm-1">
+            <a href="CAMEL_CASE[tableName]s/list" class="btn btn-danger">Cancel</a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12"> <hr style="min-width: 100%"></div>
+    </div>
+    <div class="row" [formGroup]="CAMEL_CASE[tableName]Form" >
+    [form_html]
+	</div>
+</div>
