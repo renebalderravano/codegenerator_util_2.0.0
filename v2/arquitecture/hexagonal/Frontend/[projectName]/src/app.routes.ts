@@ -2,6 +2,7 @@ import { Routes } from '@angular/router';
 import { AppLayout } from './app/layout/component/app.layout';
 import { Dashboard } from './app/pages/dashboard/dashboard';
 import { Notfound } from './app/pages/notfound/notfound';
+import { VerificacionSesionService } from '@/core/guards/verificacion-sesion.service';
 
 export const appRoutes: Routes = [
     {
@@ -12,6 +13,8 @@ export const appRoutes: Routes = [
     {
         path: '',
         component: AppLayout,
+		 canActivate:[VerificacionSesionService],
+        canActivateChild:[VerificacionSesionService],
         children: [
             { path: 'dashboard', component: Dashboard },
 //ArrayRoutes

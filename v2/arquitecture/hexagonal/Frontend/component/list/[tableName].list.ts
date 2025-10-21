@@ -32,14 +32,14 @@ export class PASCAL_CASE[tableName]List {
 	private CAMEL_CASE[tableName]Service: PASCAL_CASE[tableName]Service,
     private messageService: MessageService,
     private router: Router) {
-
+	
     this.CAMEL_CASE[tableName]Service.findAll().subscribe(
 	(data: []) => {
       this.CAMEL_CASE[tableName]s = data;
       this.loading = false;
 	  
       // @ts-ignore
-      //this.CAMEL_CASE[tableName]s.forEach((data) => (data.date = new Date(customer.date)));
+      //this.CAMEL_CASE[tableName]s.forEach((data) => (data.date = new Date(customer.date)))
     },
 	(error: string)=>{
 		console.log("error: "+ error);
@@ -60,12 +60,9 @@ export class PASCAL_CASE[tableName]List {
     this.router.navigate(['/SNAKE_CASE[tableName]/form'])
   }
 
-//	viewCustomer(customer: any) {
-//	 this.router.navigate(['/cliente/detail'],{ queryParams: { id: customer.id, name: customer.name } })
-//	}
-
-	openNew() {
-	}
+  update(data: any) {
+    this.router.navigate(['/SNAKE_CASE[tableName]/form'],{ state: { data: data } })
+  }
 
 }
 

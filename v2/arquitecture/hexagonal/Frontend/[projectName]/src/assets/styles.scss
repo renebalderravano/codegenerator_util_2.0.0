@@ -3,3 +3,13 @@
 @use './layout/layout.scss';
 @use 'primeicons/primeicons.css';
 @use './demo/demo.scss';
+
+
+input.invalid {
+  border: 2px solid red;
+}
+
+.error {
+  color: red;
+  font-size: 0.9em;
+}

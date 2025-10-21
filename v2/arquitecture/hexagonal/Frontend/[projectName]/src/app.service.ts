@@ -39,7 +39,7 @@ export class AppService {
     }
     
     // return this.http.post('http://localhost:8080/oauth/token?username=admin&password=admin1234&grant_type=password', formData, httpOptions)
-    let result: any =  await firstValueFrom(this.http.post('http://localhost:8081/api/auth/login', formData, httpOptions))
+    let result: any =  await firstValueFrom(this.http.post('http://localhost:8080/api/auth/login', formData, httpOptions))
   //   .subscribe(
   //     (res: any)=>{
         this.token = result.token
