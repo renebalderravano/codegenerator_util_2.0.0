@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ImportsModule } from 'src/import';
@@ -8,7 +8,7 @@ import { Table } from 'primeng/table';
 import { PASCAL_CASE[tableName]Service } from '../../service/SNAKE_CASE[tableName].service';
 
 @Component({
-  selector: 'SNAKE_CASE[tableName].list',
+  selector: 'app-KEBAB_CASE[tableName]-list',
   imports: [CommonModule,
     ImportsModule,
     FormsModule],
@@ -24,6 +24,7 @@ export class PASCAL_CASE[tableName]List {
   loading: boolean = true;
   CAMEL_CASE[tableName]s: any[] = [];
   @ViewChild('filter') filter!: ElementRef;
+  @Output() dataEmitter = new EventEmitter<any>();
 
   /**
    *
@@ -61,7 +62,8 @@ export class PASCAL_CASE[tableName]List {
   }
 
   update(data: any) {
-    this.router.navigate(['/SNAKE_CASE[tableName]/form'],{ state: { data: data } })
+   // this.router.navigate(['/SNAKE_CASE[tableName]/form'],{ state: { data: data } })
+     this.dataEmitter.emit(data)
   }
 
 }

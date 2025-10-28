@@ -5,12 +5,6 @@
     "projects": {
         "[projectName]": {
             "projectType": "application",
-            "i18n": {
-                "sourceLocale": "en-US",
-                "locales": {
-                    "es": "src/locale/messages.es.xlf"
-                }
-            },
             "schematics": {
                 "@schematics/angular:component": {
                     "style": "scss",
@@ -29,10 +23,6 @@
                         "outputPath": "dist/[projectName]",
                         "index": "src/index.html",
                         "browser": "src/main.ts",
-                        "localize": [
-                            "en-US",
-                            "es"
-                        ],
                         "polyfills": [
                             "zone.js"
                         ],
@@ -51,11 +41,6 @@
                         "scripts": []
                     },
                     "configurations": {
-                        "es": {
-                            "localize": [
-                                "es"
-                            ]
-                        },
                         "production": {
                             "outputHashing": "all"
                         },
@@ -70,9 +55,6 @@
                 "serve": {
                     "builder": "@angular-devkit/build-angular:dev-server",
                     "configurations": {
-                        "es": {
-                            "buildTarget": "[projectName]:build:es"
-                        },
                         "production": {
                             "buildTarget": "[projectName]:build:production"
                         },

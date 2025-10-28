@@ -4,14 +4,19 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.digiret.infrastructure.adapters.output.persistence.entity.UsuarioEntity;
+
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.AbstractQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
 public abstract class BaseRepository<ENTITY> extends BaseUtil {
@@ -43,14 +48,14 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 	}
 
 	public List<Object> findAll() {
-		Session session = this.sf.getCurrentSession();
-		EntityManager em = session.getEntityManagerFactory().createEntityManager();
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<ENTITY> q = cb.createQuery(entityClass);
-		Root<ENTITY> root = q.from(entityClass);
-		q.select(root);
-		List l = em.createQuery(q).getResultList();
-		List d = (List<Object>) super.prepareListToSendOfRepositoryToService(l);
+		List d =  null;
+		try {
+			List l = getEm().createQuery(getCriteriaQuery(getCriteriaBuilder())).getResultList();
+			d = (List<Object>) super.prepareListToSendOfRepositoryToService(l);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		return d ;
 	}
 
@@ -73,9 +78,58 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 		}
 		return true;
 	}
+	
+	public List<Object> findBy(Map<String, Object> src) {
+		
+		cb = getCriteriaBuilder();
+		CriteriaQuery<ENTITY> ctr = getCriteriaQuery(cb);
+		Root<ENTITY> root =  getRoot(ctr);
+		
+		List<Predicate> predicates = new ArrayList<>();
+		for (Map.Entry<String, Object> field : src.entrySet()) {
+			String key = field.getKey();
+			Object val = field.getValue();
+			
+			 predicates.add(cb.equal(root.get(key), val));
+			
+		}
+	    ctr.select(root).where(predicates.toArray(new Predicate[0]));
+	
+		List<Object> l = (List<Object>) getEm().createQuery(ctr).getResultList();
+		return (List<Object>) super.prepareListToSendOfRepositoryToService(l);
+	}
 
 	public SessionFactory getSf() {
 		return sf;
 	}
+	
+	private EntityManager em;
+	private Root<ENTITY> root;
+	private CriteriaBuilder cb;
+	
+	protected EntityManager getEm() {
+		Session session = this.sf.getCurrentSession();
+		return session.getEntityManagerFactory().createEntityManager();
+	}
+	
+	protected CriteriaQuery<ENTITY> getCriteriaQuery(CriteriaBuilder cb ) {
+		CriteriaQuery<ENTITY> q = cb.createQuery(entityClass);
+		getRoot(q);
+//		q.select(root);
+		return q;
+	}
+	
+	protected Root<ENTITY> getRoot(CriteriaQuery<ENTITY> q) {
+		Root<ENTITY> root = q.from(entityClass);
+		q.select(root);
+		return root;
+	}
 
+	protected CriteriaBuilder getCriteriaBuilder() {
+		return getEm().getCriteriaBuilder();
+	}
+
+	protected void setCb(CriteriaBuilder cb) {
+		this.cb = cb;
+	}
 }

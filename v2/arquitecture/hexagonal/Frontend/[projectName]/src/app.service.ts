@@ -19,11 +19,10 @@ export class AppService {
       headers: new HttpHeaders({
 
         "Content-Type": "application/json",
-        // "Content-Type": "application/x-www-form-urlencoded",
+        // "Content-Type" : "application/x-www-form-urlencoded",
         // "Authorization": 'Basic c3ByaW5nLXNlY3VyaXR5LW9hdXRoMi1yZWFkLXdyaXRlLWNsaWVudDpzcHJpbmctc2VjdXJpdHktb2F1dGgyLXJlYWQtd3JpdGUtY2xpZW50LXBhc3N3b3JkMTIzNA==',
         "Access-Control-Allow-Origin": "https://localhost:4200/"
-
-      // "Authorization": 'Basic ' + btoa('spring-security-oauth2-read-write-client' + ':' + 'spring-security-oauth2-read-write-client-password1234')
+		// "Authorization": 'Basic ' + btoa('spring-security-oauth2-read-write-client' + ':' + 'spring-security-oauth2-read-write-client-password1234')
       })
     };
 

@@ -7,6 +7,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,12 @@ public abstract class BaseController<DTO> extends BaseUtil {
 	public DTO findById(@PathVariable("id") Integer id) {
 		return (DTO) callMethod(getService(), "findById", new Object[] { id }, id.getClass());
 	}
+	
+	@CrossOrigin(origins = "*")
+	@PostMapping(path = "/findBy")
+	public List<Object> findBy(@RequestBody Map<String, Object> src) {
+		return (List<Object>) callMethod(getService(), "findBy", new Object[] { src }, src.getClass());
+	}
 
 	@CrossOrigin
 	@GetMapping(path = "/delete/{id}")
@@ -78,7 +85,7 @@ public abstract class BaseController<DTO> extends BaseUtil {
 		return data;
 	}
 
-	private Object getService() {
+	protected Object getService() {
 		String name = entityClass.getSimpleName().replace("DTO", "");
 		String beanName = name.substring(0, 1).toLowerCase()
 				+ name.substring(1) + "ServiceImpl";

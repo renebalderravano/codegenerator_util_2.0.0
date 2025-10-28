@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 
 /**
  * @author José Rene Balderravano Hernández
- * @see {@link [packageName].util.MapperUtil MapperUtil} 
+ * @see {@link com.digiret.util.MapperUtil MapperUtil} 
  */
 public class BaseUtil {
+	
+	@Autowired
+    private Environment env;
 
 	@Autowired
 	private MapperUtil mapperUtil;
@@ -37,8 +41,8 @@ public class BaseUtil {
 			return src;
 		}
 		else if(beanName.contains("Model")) {
-			String pojoName = "com.pp.infrastructure.adapter.rest.dto." + beanName.replace("Model", "DTO");
-			Class clazzModel =ClassFinder.findClassBySimpleName(beanName.replace("Model", "DTO"));
+			String pojoName = env.getProperty("packagesToScan")+ ".infrastructure.adapters.input.rest.dto." + beanName.replace("Model", "DTO");
+			Class clazzModel = getReflectUtil().findByClassName(pojoName);
 			Object trg = null;
 			if (clazzModel != null)
 				trg = getMapperUtil().prepareTo(src, clazzModel);
@@ -56,17 +60,16 @@ public class BaseUtil {
 		for (Object obj : srcObj) {
 			trgObj.add(prepareSendOfServiceToController(obj));
 		}
-
 		return trgObj;
 	}
 
 	public Object prepareSendOfRepositoryToService(Object src) {
 		String beanName = src.getClass().getSimpleName().replace("Entity", "");
-		String pojoName = "com.pp.domain.model." + beanName + "Model";
+		String pojoName = env.getProperty("packagesToScan")+".domain.model." + beanName + "Model";
 		Object trg = null;
-		Class<?> clazzModel = ClassFinder.findClassBySimpleName(beanName + "Model");
+		Class<?> clazzModel = getReflectUtil().findByClassName(pojoName);
 		if (clazzModel == null) {
-			clazzModel = ClassFinder.findClassBySimpleName(beanName +"DTO");
+			clazzModel = getReflectUtil().findByClassName(pojoName.replace("Model", "DTO"));
 			if (clazzModel != null)
 				trg = getMapperUtil().prepareTo(src, clazzModel);
 
@@ -105,4 +108,13 @@ public class BaseUtil {
 	public void setValidatorUtil(ValidatorUtil validatorUtil) {
 		this.validatorUtil = validatorUtil;
 	}
+
+	public ReflectUtil getReflectUtil() {
+		return reflectUtil;
+	}
+
+	public void setReflectUtil(ReflectUtil reflectUtil) {
+		this.reflectUtil = reflectUtil;
+	}
+	
 }

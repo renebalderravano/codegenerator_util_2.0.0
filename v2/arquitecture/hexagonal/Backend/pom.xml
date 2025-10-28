@@ -90,12 +90,6 @@
 			<artifactId>commons-csv</artifactId>
 			<version>1.10.0</version>
 		</dependency>
-		
-		<dependency>
-		  <groupId>io.github.classgraph</groupId>
-		  <artifactId>classgraph</artifactId>
-		  <version>4.8.162</version>
-		</dependency>
 
 	</dependencies>
 

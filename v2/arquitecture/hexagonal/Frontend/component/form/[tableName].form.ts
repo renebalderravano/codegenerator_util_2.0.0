@@ -1,55 +1,65 @@
-import { Component } from '@angular/core';
-import { ButtonModule } from "primeng/button";
-import { ToastModule } from "primeng/toast";
-import { MenubarModule } from "primeng/menubar";
-import { IconFieldModule } from "primeng/iconfield";
-import { InputIconModule } from "primeng/inputicon";
-import { InputTextModule } from 'primeng/inputtext';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, Signal, SimpleChanges } from '@angular/core';
 import { Router} from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ImportsModule } from 'src/import';
+import { MessageService } from 'primeng/api';
 import { PASCAL_CASE[tableName]Service } from '../../service/SNAKE_CASE[tableName].service';
+//importService
 
 @Component({
-  selector: 'SNAKE_CASE[tableName].form',
+  selector: 'app-KEBAB_CASE[tableName]-form',
   standalone:true,
-  imports: [ImportsModule,ButtonModule, ToastModule, MenubarModule, IconFieldModule, InputIconModule, InputTextModule],
+  imports: [ImportsModule],
   templateUrl: './SNAKE_CASE[tableName].form.html',
-  styleUrl: './SNAKE_CASE[tableName].form.scss'
+  styleUrl: './SNAKE_CASE[tableName].form.scss',
+  providers: [MessageService],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class PASCAL_CASE[tableName]Form {
+export class PASCAL_CASE[tableName]Form implements OnChanges {
 
+	@Input({ transform: (value: any) => value }) data!: Signal<any>;
 	form: FormGroup<any>
+//declarationsOption
   /**
    *
    */
   constructor(
+//declarationsService
+  private messageService: MessageService,
   private CAMEL_CASE[tableName]Service: PASCAL_CASE[tableName]Service,
   private router: Router) {
 		this.form = new FormGroup({
 [formControls]
 		});
-		
+
+//executionsService
 		let data = history.state.data;
 		if (data)
 		  this.form.setValue(data)
   }
 
+	ngOnChanges(changes: SimpleChanges) {
+		if (changes['data'] && changes['data'].currentValue !== undefined) {
+			this.form.setValue( changes['data'].currentValue );
+		}
+	}
 
-  goToPASCAL_CASE[tableName]() {
-    this.router.navigate(['/SNAKE_CASE[tableName]/list'])
-  }
+	goToPASCAL_CASE[tableName]() {
+		this.router.navigate(['/SNAKE_CASE[tableName]/list'])
+	}
   
-  save(){
-	this.CAMEL_CASE[tableName]Service.save(this.form.value).subscribe(
-	(data: any) => {
-      this.form.setValue(data);
-      //@ts-ignore
-      //this.CAMEL_CASE[tableName]s.forEach((data) => (data.date = new Date(customer.date)));
-    },
-	(error: string)=>{
-		console.log("error: "+ error);
-	});
+	save(){
+		this.CAMEL_CASE[tableName]Service.save(this.form.value).subscribe(
+		(data: any) => {
+		  this.form.setValue(data);
+		  
+		  this.messageService.add({ severity: 'success', summary: 'Guardado exitosamente.', detail: 'Guardado con id#'+data.id });
+		  //@ts-ignore
+		  //this.CAMEL_CASE[tableName]s.forEach((data) => (data.date = new Date(customer.date)));
+		},
+		(error: string)=>{
+			console.log("error: "+ error);
+		});
 	}
 
 }
