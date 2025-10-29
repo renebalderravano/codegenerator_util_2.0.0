@@ -12,12 +12,18 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ * @author José Rene Balderravano Hernández
+ */
 public abstract class BaseController<DTO> extends BaseUtil {
 
 	private Class<DTO> entityClass;
@@ -36,13 +42,12 @@ public abstract class BaseController<DTO> extends BaseUtil {
 	@CrossOrigin
 	@PostMapping(path = "/save")
 	public DTO save(@RequestBody DTO t) {
-
 		return (DTO) callMethod(getService(), "save", new Object[] { t }, entityClass);
 	}
 
 	@CrossOrigin
 	@PostMapping(path = "/update")
-	public void update(DTO housingLocation) {
+	public void update(DTO t) {
 	}
 
 	@CrossOrigin
@@ -68,6 +73,18 @@ public abstract class BaseController<DTO> extends BaseUtil {
 	@GetMapping(path = "/delete/{id}")
 	public Boolean delete(@PathVariable("id") Integer id) {
 		return (Boolean) callMethod(getService(), "delete", new Object[] {id}, id.getClass());
+	}
+	
+	
+	@CrossOrigin
+	@GetMapping(path = "/download")
+	public ResponseEntity<byte[]> download() {
+		
+		byte[] file = (byte[])callMethod(getService(), "download", null, null);
+		return ResponseEntity.ok()
+	        .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=archivo.xlsx")
+	        .contentType(MediaType.APPLICATION_OCTET_STREAM)
+	        .body(file );
 	}
 
 	private Object callMethod(Object obj, String methodName, Object[] values, Class<?>... classes) {

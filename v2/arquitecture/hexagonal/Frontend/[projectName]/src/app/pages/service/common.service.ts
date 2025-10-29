@@ -41,5 +41,11 @@ export class CommonService {
         let headers = this.getHeaders()
         return this.http.get(this.url_server_backend + '/' + this.entity_name + '/findById/' + id, { headers: headers })
     }
+	
+	download() {
+		return this.http.get(this.url_server_backend + '/' + this.entity_name + '/download', {
+		  responseType: 'blob' // importante para archivos binarios
+		});
+	}
 
 }

@@ -10,10 +10,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 
+/**
+ * @author José Rene Balderravano Hernández
+ */
 public abstract class BaseService<T> extends BaseUtil {
 
 	private Class<T> entityClass;
@@ -22,6 +26,7 @@ public abstract class BaseService<T> extends BaseUtil {
 	@Autowired
 	private ApplicationContext applicationContext;
 
+	@SuppressWarnings("unchecked")
 	public BaseService() {
 		Type superClass = getClass().getGenericSuperclass();
 		Type type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
@@ -120,6 +125,18 @@ public abstract class BaseService<T> extends BaseUtil {
 		}
 		
 		return (List<Object>) super.prepareListToSendOfServiceToController(callMethod(getRepository(), "findBy", new Object[] { src }, src.getClass()));
+	}
+	
+	
+	public byte[] download() {
+		
+		try {
+			return prepareToDownload((IBase) getRepository());
+		} catch (IllegalArgumentException  e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;		
 	}
 
 }

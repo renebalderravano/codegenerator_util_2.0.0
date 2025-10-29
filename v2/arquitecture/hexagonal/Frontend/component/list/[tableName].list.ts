@@ -65,6 +65,17 @@ export class PASCAL_CASE[tableName]List {
    // this.router.navigate(['/SNAKE_CASE[tableName]/form'],{ state: { data: data } })
      this.dataEmitter.emit(data)
   }
+  
+  download() {
+    this.CAMEL_CASE[tableName]Service.download().subscribe(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'archivo.xlsx';
+      a.click();
+      window.URL.revokeObjectURL(url);
+    });
+  }
 
 }
 
