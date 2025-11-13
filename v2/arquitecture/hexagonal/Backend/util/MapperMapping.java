@@ -1,9 +1,12 @@
 package [packageName].util;
 
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+
+import org.apache.logging.log4j.util.Strings;
 
 /**
  * Permite mapear una propiedad con diferente nombre o cuyo valor se encuentra en una propiedad<br>
@@ -43,7 +46,7 @@ import java.lang.annotation.Target;
  * 
  * 
  * @author José Rene Balderravano Hernández
- * @see {@link com.digiret.util.MapperUtil MapperUtil}
+ * @see {@link [packageName].util.MapperUtil MapperUtil}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
@@ -51,11 +54,21 @@ public @interface MapperMapping {
 	public Class srcClass();
 
 	/**
-	 * Indica el nombre del en el objcampo destino en el cual será establecido; el
+	 * Indica el nombre en el campo destino en el cual será establecido; el
 	 * valor del campo fuente con la sintaxis definida en el siguiente ejemplo.<br>
 	 * 
 	 * @return
 	 */
 	public String srcFieldName();
+	
+	public Class trgClass() default String.class;
+
+	/**
+	 * Indica el nombre del en el objcampo destino en el cual será establecido; el
+	 * valor del campo fuente con la sintaxis definida en el siguiente ejemplo.<br>
+	 * 
+	 * @return
+	 */
+	public String trgFieldName() default Strings.EMPTY;
 
 }

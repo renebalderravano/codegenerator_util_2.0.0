@@ -10,10 +10,7 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.digiret.infrastructure.adapters.output.persistence.entity.UsuarioEntity;
-
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.criteria.AbstractQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
@@ -40,6 +37,19 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 		s.getTransaction().commit();
 		Object w = getMapperUtil().prepareTo(entity,m);
 		return w;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public Object save(List<Object> m) {
+		Session s = sf.getCurrentSession();
+		s.beginTransaction();
+		List<Object> entity = getMapperUtil().prepareTo(m, entityClass);
+		for (Object obj : entity) {
+			s.saveOrUpdate(obj);	
+		}
+		s.getTransaction().commit();
+		m=  (List<Object>) super.prepareListToSendOfRepositoryToService(entity);
+		return m;
 	}
 
 	public void update(Object m) {
@@ -78,6 +88,11 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 		}
 		return true;
 	}
+	
+	public List<Object> findBy(Map<String, Object> src, Class<?> returnPojoType) {
+		// TODO Auto-generated method stub
+		return null;
+	} 
 	
 	public List<Object> findBy(Map<String, Object> src) {
 		

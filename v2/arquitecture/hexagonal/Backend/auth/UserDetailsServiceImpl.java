@@ -11,15 +11,15 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import [packageName].application.ports.output.UsuarioRepository;
-import [packageName].infrastructure.adapters.output.persistence.entity.UsuarioEntity;
+import [packageName].application.ports.output.UserRepository;
+import [packageName].infrastructure.adapters.output.persistence.entity.UserEntity;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UserRepository userRepository;
 
     @Override
     @Transactional(readOnly = true)
@@ -35,13 +35,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	String correo = "";
 		String contrasena = "";
     	
-    	UsuarioEntity result = usuarioRepository.findByUserName(username);
+    	UserEntity result = userRepository.findByUserName(username);
     	
     	if (result != null) {
-			correo = result.getUsuario();
-			contrasena = result.getContrasena();
+			correo = result.getUsername();
+			contrasena = result.getPassword();
 			
-			if(result.getTipoUsuario().getId() == 1) {
+			if(result.getUserType().getId() == 1) {
 				GrantedAuthority authority = new SimpleGrantedAuthority(
 						"ROLE_ADMIN");
 				userDetails = this.userDetails(correo, contrasena,

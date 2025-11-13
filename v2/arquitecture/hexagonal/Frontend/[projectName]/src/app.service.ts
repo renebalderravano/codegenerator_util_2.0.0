@@ -38,11 +38,11 @@ export class AppService {
     }
     
     // return this.http.post('http://localhost:8080/oauth/token?username=admin&password=admin1234&grant_type=password', formData, httpOptions)
-    let result: any =  await firstValueFrom(this.http.post('http://localhost:8080/api/auth/login', formData, httpOptions))
+    let result: any =  await firstValueFrom(this.http.post('http://localhost:8080/api/auth/login', formData, { withCredentials: true }))
   //   .subscribe(
   //     (res: any)=>{
         this.token = result.token
-        sessionStorage.setItem('token', JSON.stringify(this.token))     
+        //sessionStorage.setItem('token', JSON.stringify(this.token))     
   //     },
   //     err=>{
   //       console.error(err);

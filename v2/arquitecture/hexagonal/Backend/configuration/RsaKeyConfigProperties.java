@@ -2,6 +2,7 @@ package [packageName].configuration;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.security.interfaces.RSAPrivateKey;
@@ -15,7 +16,7 @@ public class RsaKeyConfigProperties {
 	private RSAPublicKey publicKey;
 	private RSAPrivateKey privateKey;
 	
-
+	@Bean
 	public RSAPublicKey getPublicKey() {
 		return publicKey;
 	}

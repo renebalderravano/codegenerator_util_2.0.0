@@ -15,7 +15,8 @@ export class CommonService {
             'Content-type': 'application/json',
             'Authorization': 'Bearer ' + this.getToken(),
             'Access-Control-Allow-Origin': 'http://localhost:4200',
-            'Access-Control-Allow-Credentials': 'true'
+            'Access-Control-Allow-Credentials': 'true',
+            'withCredentials': 'true'
         })
         return headers
     }
@@ -29,17 +30,17 @@ export class CommonService {
 
     save(data: any): Observable<any> {
         var headers = this.getHeaders()
-        return this.http.post(this.url_server_backend + '/' + this.entity_name + '/save', data, { headers: headers })
+        return this.http.post(this.url_server_backend + '/' + this.entity_name + '/save', data, { withCredentials: true })
     }
 
     findAll(): Observable<any> {
         var headers = this.getHeaders()
-        return this.http.get(this.url_server_backend + '/' + this.entity_name + '/findAll', { headers: headers })
+        return this.http.get(this.url_server_backend + '/' + this.entity_name + '/findAll', { withCredentials: true })
     }
 
     findById(id: number): Observable<any> {
         let headers = this.getHeaders()
-        return this.http.get(this.url_server_backend + '/' + this.entity_name + '/findById/' + id, { headers: headers })
+        return this.http.get(this.url_server_backend + '/' + this.entity_name + '/findById/' + id, { withCredentials: true })
     }
 	
 	download() {
@@ -47,5 +48,17 @@ export class CommonService {
 		  responseType: 'blob' // importante para archivos binarios
 		});
 	}
+	
+	
+    upload(archivo: any){
+          var headers = new HttpHeaders({
+            'Authorization': 'Bearer ' + this.getToken(),
+            'Access-Control-Allow-Origin': 'https://localhost:4200',
+            'Access-Control-Allow-Credentials': 'true'
+        })
+		const formData = new FormData();
+		formData.append('file', archivo);
+        return this.http.post(this.url_server_backend + '/' + this.entity_name + '/upload', formData, { withCredentials: true });
+    }
 
 }

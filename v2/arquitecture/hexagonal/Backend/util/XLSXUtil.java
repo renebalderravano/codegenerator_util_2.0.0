@@ -23,10 +23,9 @@ public class XLSXUtil {
             // Crear encabezado
              org.apache.poi.ss.usermodel.Row encabezado = hoja.createRow(0);
              
-             for (int i = 0; i < table.getHeaders().length; i++) {
+            for (int i = 0; i < table.getHeaders().length; i++) {
             	 ((org.apache.poi.ss.usermodel.Row) encabezado).createCell(i).setCellValue(table.getHeaders()[i]);
 			}
-             
 
             // Crear filas de datos             
              String[][] datos = new String[table.getRows().size()][table.getRows().get(0).getColumns().size()];

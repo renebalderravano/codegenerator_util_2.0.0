@@ -1,15 +1,18 @@
 package [packageName].application.ports.input;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO;
+import [packageName].domain.model.UserModel;
+import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.LoginRequest;
+import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.Response;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 
 public interface AuthService {
 	
-	public AuthDTO.Response authentication(AuthDTO.LoginRequest loginRequest);
-	
-	public String generateToken(Authentication authentication);
+	public String generateToken(UserModel userModel, Authentication authentication);
+
+	public Response authentication(LoginRequest userLogin, HttpServletResponse response);
 	
 }

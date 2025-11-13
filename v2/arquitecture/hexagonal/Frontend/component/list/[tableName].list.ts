@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { ImportsModule } from 'src/import';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
+import { CommonComponent } from '@/core/services/common.component';
 import { PASCAL_CASE[tableName]Service } from '../../service/SNAKE_CASE[tableName].service';
 
 @Component({
@@ -25,12 +26,18 @@ export class PASCAL_CASE[tableName]List {
   CAMEL_CASE[tableName]s: any[] = [];
   @ViewChild('filter') filter!: ElementRef;
   @Output() dataEmitter = new EventEmitter<any>();
+  
+  visible: boolean = false;
+  status: string | number = 'Pendiente';
+
+
 
   /**
    *
    */
   constructor(
 	private CAMEL_CASE[tableName]Service: PASCAL_CASE[tableName]Service,
+	public commonComponent: CommonComponent,
     private messageService: MessageService,
     private router: Router) {
 	
@@ -71,10 +78,32 @@ export class PASCAL_CASE[tableName]List {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'archivo.xlsx';
+      a.download = 'archivo.csv';
       a.click();
       window.URL.revokeObjectURL(url);
     });
+  }
+  
+  uploadFile(event: any) {
+    this.commonComponent.totalSizePercent = 70;
+    const archivo: File = event.files[0];
+    this.CAMEL_CASE[tableName]Service.upload(archivo).subscribe(
+      (data: any) => {
+        this.commonComponent.totalSizePercent = 100;
+        this.status = 'Completado'
+         this.messageService.add({ severity: 'info', summary: 'Success', detail: 'File Uploaded', life: 3000 });
+        setTimeout(() => {
+         
+        }, 500);
+        console.log('Archivo enviado');
+      },
+      error => {
+        console.log(error);
+      });
+  }
+  
+  showDialog() {
+    this.visible = true;
   }
 
 }

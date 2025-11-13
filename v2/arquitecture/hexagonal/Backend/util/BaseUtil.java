@@ -1,5 +1,6 @@
 package [packageName].util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -26,9 +27,12 @@ public class BaseUtil {
 
 	@Autowired
 	private ReflectUtil reflectUtil;
-	
+
 	@Autowired
 	private XLSXUtil xlsxUtil;
+
+	@Autowired
+	private CSVUtil csvUtil;
 
 	/**
 	 * Este metodo permite convertir un DTO a Model <br>
@@ -96,21 +100,46 @@ public class BaseUtil {
 		return trgObj;
 	}
 
-	public byte[] prepareToDownload(IBase iBase) {
+	public byte[] prepareToDownload(Class<?> classObj, IBase iBase) {
 		try {
+
 			List list = iBase.findAll();
-			Table table = prepareToTable(list);
-			byte[] workbook = xlsxUtil.createWorkbook(table );
-			
+			Table table = null;
+			if (!list.isEmpty()) {
+				table = prepareToTable(list);
+			} else {
+				String[] headers = Arrays.asList(classObj.getDeclaredFields()).stream().map(Field::getName)
+						.toArray(String[]::new);
+				table = new Table();
+				table.setHeaders(headers);
+			}
+
+			byte[] workbook = csvUtil.createCsvFile(table.getHeaders(), table);
 			return workbook;
-		} catch (IOException | IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+
 			e.printStackTrace();
 		}
 
 		return null;
 	}
-	
+
+	public Table prepareToUpload(Class<?> classObj, IBase iBase, byte[] file) {
+		try {
+//			Table table = xlsxUtil.readWorkbook(new ByteArrayInputStream(file));
+			String[] headers = Arrays.asList(classObj.getDeclaredFields()).stream().map(Field::getName)
+					.toArray(String[]::new);
+			Table table = csvUtil.readCsvFile(headers, file);
+			List data = prepareToPojo(classObj, table);
+			
+			iBase.save(data);
+			return table;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
 	public Table prepareToTable(List<Object> list) throws IllegalArgumentException, IllegalAccessException {
 		Table table = new Table();
 		List<Row> rows = new ArrayList<Row>();
@@ -130,15 +159,42 @@ public class BaseUtil {
 				column.setIndex(i);
 				column.setName(header);
 				column.setValue(value);
-				columns.add(column);				
+				columns.add(column);
 			}
-			
 			row.setColumns(columns);
 			rows.add(row);
 		}
 		table.setHeaders(headers);
 		table.setRows(rows);
 		return table;
+	}
+
+	public List<Object> prepareToPojo(Class<?> classObj, Table table) {
+
+		List<Field> fields = Arrays.asList(classObj.getDeclaredFields());
+		List<Object> lst = new ArrayList<Object>();
+
+		if (table.getRows() != null)
+			for (Row row : table.getRows()) {
+				Object obj = getReflectUtil().getInstanceByClassName(classObj.getName());
+				for (Column column : row.getColumns()) {
+					Field field = fields.stream().filter(f -> f.getName().equals(column.getName())).findFirst().get();
+					try {
+						field.setAccessible(true);
+						
+						
+						Object val = reflectUtil.castFromString(column.getValue().toString(), field.getType());
+						
+						field.set(obj, val);
+					} catch (IllegalArgumentException | IllegalAccessException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				lst.add(obj);
+			}
+
+		return lst;
 	}
 
 	public MapperUtil getMapperUtil() {

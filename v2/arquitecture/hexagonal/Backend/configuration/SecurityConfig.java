@@ -7,8 +7,8 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -41,14 +41,22 @@ import org.springframework.web.servlet.handler.MappedInterceptor;
 @EnableConfigurationProperties(RsaKeyConfigProperties.class)
 public class SecurityConfig {
 
-	private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
+	//private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
 
 	@Autowired
 	private RsaKeyConfigProperties rsaKeyConfigProperties;
 
 	@Autowired
 	private UserDetailsService userDetailsService;
+	
+	
+	 private final CustomInterceptor customInterceptor;
+	 
+	public SecurityConfig(CustomInterceptor customInterceptor) {
+        this.customInterceptor = customInterceptor;
+	}
 
+	@SuppressWarnings("deprecation")
 	@Bean
 	public AuthenticationManager authManager() {
 		var authProvider = new DaoAuthenticationProvider();
@@ -67,7 +75,22 @@ public class SecurityConfig {
 		.authorizeHttpRequests(auth -> {
 			auth.requestMatchers("/error/**").permitAll();
 			auth.requestMatchers("/api/auth/**").permitAll();
-//requestMatchers			
+auth.requestMatchers("/ClientFile/**").permitAll();
+auth.requestMatchers("/PayrollPaymentType/**").permitAll();
+auth.requestMatchers("/User/**").permitAll();
+auth.requestMatchers("/FileType/**").permitAll();
+auth.requestMatchers("/Employee/**").permitAll();
+auth.requestMatchers("/UserType/**").permitAll();
+auth.requestMatchers("/UserProfile/**").permitAll();
+auth.requestMatchers("/Access/**").permitAll();
+auth.requestMatchers("/AccessProfile/**").permitAll();
+auth.requestMatchers("/Layout/**").permitAll();
+auth.requestMatchers("/Status/**").permitAll();
+auth.requestMatchers("/AccessProfileDetail/**").permitAll();
+auth.requestMatchers("/Client/**").permitAll();
+auth.requestMatchers("/LayoutField/**").permitAll();
+auth.requestMatchers("/UserEmployee/**").permitAll();
+			
 //			auth.requestMatchers("/seguridad/usuario/save").hasAnyRole("ROLE_ADMIN");			
 			auth.anyRequest().authenticated();
 		}).sessionManagement(
@@ -116,7 +139,7 @@ public class SecurityConfig {
 
 	@Bean
 	public MappedInterceptor loginInter() {
-		return new MappedInterceptor(null, new CustomInterceptor());
+		return new MappedInterceptor(null, customInterceptor);
 	}
 
 }

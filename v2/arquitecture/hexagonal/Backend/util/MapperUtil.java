@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 /**
  * Proporciona metodos que permiten realizar la transferencia de información
  * entre POJOS con campos del mismo tipo de dato y<br> nombres similares y/o
- * diferentes si se utiliza la anotación {@link com.digiret.util.MapperMapping
+ * diferentes si se utiliza la anotación {@link [packageName].util.MapperMapping
  * MapperMapping}.
  * 
  * @author José Rene Balderravano Hernández
- * @see {@link com.digiret.util.MapperMapping MapperMapping}
+ * @see {@link [packageName].util.MapperMapping MapperMapping}
  */
 @Component
 public class MapperUtil {
@@ -91,6 +91,7 @@ public class MapperUtil {
 		}
 		return trgObject;
 	}
+	
 
 	/**
 	 * Permite realizar la tranferencia de valores entre campos de nombre y tipo de

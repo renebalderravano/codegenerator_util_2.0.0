@@ -61,5 +61,22 @@ export class PASCAL_CASE[tableName]Form implements OnChanges {
 			console.log("error: "+ error);
 		});
 	}
+	
+	clear() {
+		this.form.reset()
+	}
+	
+	uploadFile(event: any) {
+		const archivo: File = event.files[0];
+
+		this.CAMEL_CASE[tableName]Service.upload(archivo).subscribe(
+			(data: any) => {
+				console.log('Archivo enviado');
+			},
+			error => {
+				console.log(error);
+				
+			});
+	}
 
 }
