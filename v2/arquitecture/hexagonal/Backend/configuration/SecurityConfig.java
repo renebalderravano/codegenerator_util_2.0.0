@@ -42,15 +42,13 @@ import org.springframework.web.servlet.handler.MappedInterceptor;
 public class SecurityConfig {
 
 	//private static final Logger log = LoggerFactory.getLogger(SecurityConfig.class);
-
 	@Autowired
 	private RsaKeyConfigProperties rsaKeyConfigProperties;
 
 	@Autowired
-	private UserDetailsService userDetailsService;
+	private UserDetailsService userDetailsService;	
 	
-	
-	 private final CustomInterceptor customInterceptor;
+	private final CustomInterceptor customInterceptor;
 	 
 	public SecurityConfig(CustomInterceptor customInterceptor) {
         this.customInterceptor = customInterceptor;
@@ -68,29 +66,29 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector)
 			throws Exception {
-
-		return http.csrf(csrf -> {
+		return http
+		.csrf(csrf -> {
 			csrf.disable();
-		}).cors(cors -> cors.disable())
+		})
+		.cors(Customizer.withDefaults())
 		.authorizeHttpRequests(auth -> {
 			auth.requestMatchers("/error/**").permitAll();
 			auth.requestMatchers("/api/auth/**").permitAll();
-auth.requestMatchers("/ClientFile/**").permitAll();
-auth.requestMatchers("/PayrollPaymentType/**").permitAll();
-auth.requestMatchers("/User/**").permitAll();
-auth.requestMatchers("/FileType/**").permitAll();
-auth.requestMatchers("/Employee/**").permitAll();
-auth.requestMatchers("/UserType/**").permitAll();
-auth.requestMatchers("/UserProfile/**").permitAll();
-auth.requestMatchers("/Access/**").permitAll();
-auth.requestMatchers("/AccessProfile/**").permitAll();
-auth.requestMatchers("/Layout/**").permitAll();
-auth.requestMatchers("/Status/**").permitAll();
-auth.requestMatchers("/AccessProfileDetail/**").permitAll();
-auth.requestMatchers("/Client/**").permitAll();
-auth.requestMatchers("/LayoutField/**").permitAll();
-auth.requestMatchers("/UserEmployee/**").permitAll();
-			
+			auth.requestMatchers("/ClientFile/**").permitAll();
+			auth.requestMatchers("/PayrollPaymentType/**").permitAll();
+			auth.requestMatchers("/User/**").permitAll();
+			auth.requestMatchers("/FileType/**").permitAll();
+			auth.requestMatchers("/Employee/**").permitAll();
+			auth.requestMatchers("/UserType/**").permitAll();
+			auth.requestMatchers("/UserProfile/**").permitAll();
+			auth.requestMatchers("/Access/**").permitAll();
+			auth.requestMatchers("/AccessProfile/**").permitAll();
+			auth.requestMatchers("/Layout/**").permitAll();
+			auth.requestMatchers("/Status/**").permitAll();
+			auth.requestMatchers("/AccessProfileDetail/**").permitAll();
+			auth.requestMatchers("/Client/**").permitAll();
+			auth.requestMatchers("/LayoutField/**").permitAll();
+			auth.requestMatchers("/UserEmployee/**").permitAll();
 //			auth.requestMatchers("/seguridad/usuario/save").hasAnyRole("ROLE_ADMIN");			
 			auth.anyRequest().authenticated();
 		}).sessionManagement(
@@ -102,7 +100,7 @@ auth.requestMatchers("/UserEmployee/**").permitAll();
 	}
 
 	@Bean
-	public JwtDecoder jwtDecoder() {
+	JwtDecoder jwtDecoder() {
 		return NimbusJwtDecoder.withPublicKey(rsaKeyConfigProperties.getPublicKey()).build();
 	}
 
@@ -125,8 +123,7 @@ auth.requestMatchers("/UserEmployee/**").permitAll();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOrigin("https://localhost:4200/");
-//		config.addAllowedOrigin("http://localhost:3000/");
+		config.addAllowedOrigin("https://localhost:4200");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("OPTIONS");
 		config.addAllowedMethod("GET");

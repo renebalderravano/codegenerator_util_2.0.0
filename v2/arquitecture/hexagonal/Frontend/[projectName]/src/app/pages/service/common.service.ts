@@ -14,7 +14,7 @@ export class CommonService {
         var headers = new HttpHeaders({
             'Content-type': 'application/json',
             'Authorization': 'Bearer ' + this.getToken(),
-            'Access-Control-Allow-Origin': 'http://localhost:4200',
+            'Access-Control-Allow-Origin': 'https://localhost:4200',
             'Access-Control-Allow-Credentials': 'true',
             'withCredentials': 'true'
         })

@@ -14,8 +14,9 @@ import java.security.interfaces.RSAPublicKey;
 public class RsaKeyConfigProperties {
 	
 	private RSAPublicKey publicKey;
-	private RSAPrivateKey privateKey;
 	
+	private RSAPrivateKey privateKey;	
+
 	@Bean
 	public RSAPublicKey getPublicKey() {
 		return publicKey;

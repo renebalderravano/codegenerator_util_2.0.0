@@ -48,7 +48,12 @@ export class PASCAL_CASE[tableName]Form implements OnChanges {
 		this.router.navigate(['/SNAKE_CASE[tableName]/list'])
 	}
   
-	save(){
+	save(){	
+		if(this.form.invalid){
+			this.messageService.add({ severity: 'warn', summary: 'Llene los campos requeridos.', detail: 'Guardado con id#'+this.form.value.id });
+			return;
+		}
+		
 		this.CAMEL_CASE[tableName]Service.save(this.form.value).subscribe(
 		(data: any) => {
 		  this.form.setValue(data);
