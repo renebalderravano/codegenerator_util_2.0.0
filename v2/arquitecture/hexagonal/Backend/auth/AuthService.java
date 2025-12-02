@@ -1,10 +1,10 @@
-package [packageName].application.ports.input;
+package [packageName].application.ports.input.security;
 
 import org.springframework.security.core.Authentication;
 
 import [packageName].domain.model.UserModel;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.LoginRequest;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.Response;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO.LoginRequest;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO.Response;
 
 import jakarta.servlet.http.HttpServletResponse;
 

@@ -1,4 +1,4 @@
-package [packageName].infrastructure.adapters.input.rest.dto;
+package [packageName].infrastructure.adapters.input.dto.security;
 
 public class AuthDTO {
     public record LoginRequest(String username, String password) {

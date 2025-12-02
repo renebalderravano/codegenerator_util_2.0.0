@@ -1,4 +1,4 @@
-package [packageName].application.usecases;
+package [packageName].application.usecases.security;
 
 import java.util.Arrays;
 
@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import [packageName].application.ports.output.UserRepository;
-import [packageName].infrastructure.adapters.output.persistence.entity.UserEntity;
+import [packageName].application.ports.output.security.UserRepository;
+import [packageName].infrastructure.adapters.output.persistence.entity.security.UserEntity;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

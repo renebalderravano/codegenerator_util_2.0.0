@@ -1,4 +1,4 @@
-package [packageName].infrastructure.adapters.input.rest;
+package [packageName].infrastructure.adapters.input.rest.security;
 
 //import org.slf4j.Logger;
 //import org.slf4j.LoggerFactory;
@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import [packageName].application.ports.input.AuthService;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.Response;
+import [packageName].application.ports.input.security.AuthService;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO.Response;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

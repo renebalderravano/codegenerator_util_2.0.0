@@ -45,13 +45,14 @@ export class CommonService {
 	
 	download() {
 		return this.http.get(this.url_server_backend + '/' + this.entity_name + '/download', {
-		  responseType: 'blob' // importante para archivos binarios
+		  responseType: 'blob', // importante para archivos binarios
+		  withCredentials: true 
 		});
 	}
 	
 	
     upload(archivo: any){
-          var headers = new HttpHeaders({
+        var headers = new HttpHeaders({
             'Authorization': 'Bearer ' + this.getToken(),
             'Access-Control-Allow-Origin': 'https://localhost:4200',
             'Access-Control-Allow-Credentials': 'true'

@@ -1,4 +1,4 @@
-package [packageName].application.usecases;
+package [packageName].application.usecases.security;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -22,13 +22,13 @@ import org.springframework.security.oauth2.jwt.JwtEncoder;
 import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
-import [packageName].application.ports.input.AuthService;
-import [packageName].application.ports.input.UserService;
+import [packageName].application.ports.input.security.AuthService;
+import [packageName].application.ports.input.security.UserService;
 import [packageName].domain.model.UserModel;
-import [packageName].infrastructure.adapters.input.rest.AuthController;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.LoginRequest;
-import [packageName].infrastructure.adapters.input.rest.dto.AuthDTO.Response;
+import [packageName].infrastructure.adapters.input.rest.security.AuthController;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO.LoginRequest;
+import [packageName].infrastructure.adapters.input.dto.security.AuthDTO.Response;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
