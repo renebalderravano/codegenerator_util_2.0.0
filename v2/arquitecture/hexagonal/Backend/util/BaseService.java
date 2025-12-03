@@ -22,6 +22,7 @@ public abstract class BaseService<T> extends BaseUtil {
 
 	private Class<T> entityClass;
 	private Object service;
+	private String schema;
 	
 	@Autowired
 	private Environment env;
@@ -34,6 +35,10 @@ public abstract class BaseService<T> extends BaseUtil {
 		Type superClass = getClass().getGenericSuperclass();
 		Type type = ((ParameterizedType) superClass).getActualTypeArguments()[0];
 		entityClass = (Class<T>) type;
+		
+		String[] pack = this.getClass().getPackage().getName().split("\\.");
+		
+		this.schema = pack[pack.length-1];
 	}
 
 	/**
@@ -51,7 +56,7 @@ public abstract class BaseService<T> extends BaseUtil {
 			return errors;
 		
 		return (Object) super.prepareSendOfServiceToController(
-				callMethod(getRepository(), "save", new Object[] { t }, Object.class));
+				callMethod(getRepository(), "save", new Object[] { t }, Object.class),this.schema);
 	}
 
 	/**
@@ -82,7 +87,7 @@ public abstract class BaseService<T> extends BaseUtil {
 			return errors;
 		
 		return (Object) super.prepareSendOfServiceToController(
-				callMethod(getRepository(), "save", new Object[] { t }, List.class));
+				callMethod(getRepository(), "save", new Object[] { t }, List.class), this.schema);
 	}
 
 	public void update(Object t) {
@@ -90,11 +95,11 @@ public abstract class BaseService<T> extends BaseUtil {
 
 	public List<Object> findAll() {
 		return (List<Object>) super.prepareListToSendOfServiceToController(
-				callMethod(getRepository(), "findAll", null, null));
+				callMethod(getRepository(), "findAll", null, null),this.schema);
 	}
 
 	public T findById(Integer id) {
-		return (T) super.prepareSendOfServiceToController(callMethod(getRepository(), "findById", new Object[] { id }, id.getClass()));
+		return (T) super.prepareSendOfServiceToController(callMethod(getRepository(), "findById", new Object[] { id }, id.getClass()),this.schema);
 	}
 
 	public Boolean delete(Integer id) {
@@ -151,7 +156,7 @@ public abstract class BaseService<T> extends BaseUtil {
 
 		List<Object> le = validateFields(src);
 		if(le==null)		
-			return (List<Object>) super.prepareListToSendOfServiceToController(callMethod(getRepository(), "findBy", new Object[] { src }, Map.class));
+			return (List<Object>) super.prepareListToSendOfServiceToController(callMethod(getRepository(), "findBy", new Object[] { src }, Map.class), this.schema);
 		else
 			return le;
 		

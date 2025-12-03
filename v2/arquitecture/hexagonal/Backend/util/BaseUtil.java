@@ -43,15 +43,15 @@ public class BaseUtil {
 	 * @param src Objeto fuente
 	 * 
 	 */
-	public Object prepareSendOfServiceToController(Object src) {
+	public Object prepareSendOfServiceToController(Object src, String schema) {
 
 		String beanName = src.getClass().getSimpleName();
 
 		if (beanName.contains("DTO")) {
 			return src;
 		} else if (beanName.contains("Model")) {
-			String pojoName = env.getProperty("packagesToScan") + ".infrastructure.adapters.input.rest.dto."
-					+ beanName.replace("Model", "DTO");
+			String pojoName = env.getProperty("packagesToScan") + ".infrastructure.adapters.input.dto."
+					+schema+"."+ beanName.replace("Model", "DTO");
 			Class<?> clazzModel = getReflectUtil().findByClassName(pojoName);
 			Object trg = null;
 			if (clazzModel != null)
@@ -63,12 +63,12 @@ public class BaseUtil {
 		return null;
 	}
 
-	public List<Object> prepareListToSendOfServiceToController(Object object) {
+	public List<Object> prepareListToSendOfServiceToController(Object object, String schema) {
 
 		List<Object> trgObj = new ArrayList<Object>();
 		List<?> srcObj = (ArrayList<?>) object;
 		for (Object obj : srcObj) {
-			trgObj.add(prepareSendOfServiceToController(obj));
+			trgObj.add(prepareSendOfServiceToController(obj,schema));
 		}
 		return trgObj;
 	}

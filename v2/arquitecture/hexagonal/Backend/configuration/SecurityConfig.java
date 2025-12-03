@@ -72,23 +72,7 @@ public class SecurityConfig {
 		})
 		.cors(Customizer.withDefaults())
 		.authorizeHttpRequests(auth -> {
-			auth.requestMatchers("/error/**").permitAll();
-			auth.requestMatchers("/api/auth/**").permitAll();
-			auth.requestMatchers("/ClientFile/**").permitAll();
-			auth.requestMatchers("/PayrollPaymentType/**").permitAll();
-			auth.requestMatchers("/User/**").permitAll();
-			auth.requestMatchers("/FileType/**").permitAll();
-			auth.requestMatchers("/Employee/**").permitAll();
-			auth.requestMatchers("/UserType/**").permitAll();
-			auth.requestMatchers("/UserProfile/**").permitAll();
-			auth.requestMatchers("/Access/**").permitAll();
-			auth.requestMatchers("/AccessProfile/**").permitAll();
-			auth.requestMatchers("/Layout/**").permitAll();
-			auth.requestMatchers("/Status/**").permitAll();
-			auth.requestMatchers("/AccessProfileDetail/**").permitAll();
-			auth.requestMatchers("/Client/**").permitAll();
-			auth.requestMatchers("/LayoutField/**").permitAll();
-			auth.requestMatchers("/UserEmployee/**").permitAll();
+//requestMatchers
 //			auth.requestMatchers("/seguridad/usuario/save").hasAnyRole("ROLE_ADMIN");			
 			auth.anyRequest().authenticated();
 		}).sessionManagement(
