@@ -72,6 +72,8 @@ public class SecurityConfig {
 		})
 		.cors(Customizer.withDefaults())
 		.authorizeHttpRequests(auth -> {
+			auth.requestMatchers("/error/**").permitAll();
+			auth.requestMatchers("/api/auth/**").permitAll();
 //requestMatchers
 //			auth.requestMatchers("/seguridad/usuario/save").hasAnyRole("ROLE_ADMIN");			
 			auth.anyRequest().authenticated();
