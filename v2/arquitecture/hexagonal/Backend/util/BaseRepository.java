@@ -35,7 +35,7 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 		Object entity = getMapperUtil().prepareTo(m, entityClass);
 		s.saveOrUpdate(entity);
 		s.getTransaction().commit();
-		Object w = getMapperUtil().prepareTo(entity,m);
+		Object w = super.prepareSendOfRepositoryToService(entity);
 		return w;
 	}
 	
@@ -72,7 +72,7 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 	public Object findById(Integer id) {
 		Session session = this.sf.getCurrentSession();
 		ENTITY hl = (ENTITY) session.byId(entityClass).load(id);
-		return getMapperUtil().prepareTo(hl, entityClass);
+		return super.prepareSendOfRepositoryToService(hl);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -95,18 +95,14 @@ public abstract class BaseRepository<ENTITY> extends BaseUtil {
 	} 
 	
 	public List<Object> findBy(Map<String, Object> src) {
-		
 		cb = getCriteriaBuilder();
 		CriteriaQuery<ENTITY> ctr = getCriteriaQuery(cb);
 		Root<ENTITY> root =  getRoot(ctr);
-		
 		List<Predicate> predicates = new ArrayList<>();
 		for (Map.Entry<String, Object> field : src.entrySet()) {
 			String key = field.getKey();
-			Object val = field.getValue();
-			
-			 predicates.add(cb.equal(root.get(key), val));
-			
+			Object val = field.getValue();			
+			predicates.add(cb.equal(root.get(key), val));
 		}
 	    ctr.select(root).where(predicates.toArray(new Predicate[0]));
 	
