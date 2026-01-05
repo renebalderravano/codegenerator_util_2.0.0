@@ -16,14 +16,14 @@ import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 
-public abstract class BaseRepository<ENTITY> extends BaseUtil {
+public abstract class BaseDAO<ENTITY> extends BaseUtil {
 
 	@Autowired
 	private SessionFactory sf;
 
 	private Class<ENTITY> entityClass;
 
-	public BaseRepository() {
+	public BaseDAO() {
 		Type superClass = getClass().getGenericSuperclass();
 		entityClass = (Class<ENTITY>) ((ParameterizedType) superClass).getActualTypeArguments()[0];
 	}

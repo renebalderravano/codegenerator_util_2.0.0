@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import [packageName].application.ports.output.security.UserRepository;
+import [packageName].application.ports.output.security.UserDAO;
 import [packageName].infrastructure.adapters.output.persistence.entity.security.UserEntity;
 
 @Service
@@ -19,13 +19,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     
     @Autowired
-    private UserRepository userRepository;
+    private UserDAO userDAO;
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
-//        User users = userRepository.findByUserName(username, "");
+//        User users = userDAO.findByUserName(username, "");
 //        if (users != null) {
 //            return users;
 //        }
@@ -35,7 +35,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	String correo = "";
 		String contrasena = "";
     	
-    	UserEntity result = userRepository.findByUserName(username);
+    	UserEntity result = userDAO.findByUserName(username);
     	
     	if (result != null) {
 			correo = result.getUsername();
