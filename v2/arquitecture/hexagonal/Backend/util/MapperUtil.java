@@ -1,6 +1,8 @@
 package [packageName].util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,12 +13,12 @@ import org.springframework.stereotype.Component;
 
 /**
  * Proporciona metodos que permiten realizar la transferencia de información
- * entre POJOS con campos del mismo tipo de dato y<br> nombres similares y/o
- * diferentes si se utiliza la anotación {@link [packageName].util.MapperMapping
- * MapperMapping}.
+ * entre POJOS con campos del mismo tipo de dato y<br>
+ * nombres similares y/o diferentes si se utiliza la anotación
+ * {@link com.digiret.util.MapperMapping MapperMapping}.
  * 
  * @author José Rene Balderravano Hernández
- * @see {@link [packageName].util.MapperMapping MapperMapping}
+ * @see {@link com.digiret.util.MapperMapping MapperMapping}
  */
 @Component
 public class MapperUtil {
@@ -91,7 +93,6 @@ public class MapperUtil {
 		}
 		return trgObject;
 	}
-	
 
 	/**
 	 * Permite realizar la tranferencia de valores entre campos de nombre y tipo de
@@ -126,7 +127,7 @@ public class MapperUtil {
 //							}
 //						}
 //				}
-				
+
 				if (trgField.isPresent()) {
 					trgField.get().setAccessible(true);
 
@@ -141,6 +142,40 @@ public class MapperUtil {
 					}
 
 					if (trgField.get().getType().getName().equals(fieldSource.getType().getName())) {
+
+						if (trgField.get().getName().equals("informationProfileDetails"))
+							System.out.println();
+						
+						if (List.class.isAssignableFrom(trgField.get().getType())) {
+							System.out.println("Field is a List");
+							String classTemplateList = "";
+							// 3. Get generic type information
+							Type genericType = trgField.get().getGenericType();
+							if (genericType instanceof ParameterizedType) {
+								ParameterizedType paramType = (ParameterizedType) genericType;
+								Type[] typeArgs = paramType.getActualTypeArguments();
+
+								if (typeArgs.length > 0) {
+									classTemplateList = typeArgs[0].getTypeName();
+									System.out.println("Generic type: " + typeArgs[0].getTypeName());
+								}
+							}
+
+							
+							
+							List<Object> lst = (List<Object>) sourceValue;
+							
+							List<Object> lstTrg = new ArrayList<Object>();
+							for (Object src : lst) {
+								Object objTrg = reflectUtil.getInstanceByClassName(classTemplateList);
+								Object objTrgLst = copyValues(src, objTrg);
+								lstTrg.add(objTrgLst);
+							}
+							
+							sourceValue = lstTrg;
+						}
+				
+
 						trgField.get().set(trgObject, sourceValue);
 					}
 				}
@@ -161,29 +196,27 @@ public class MapperUtil {
 
 					if (srcField.isPresent()) {
 						srcField.get().setAccessible(true);
-						
+
 						Object objSrcValue = srcField.get().get(srcObject);
 						Object valSrc = null;
 						if (srcFieldName.length == 2) {
 							Field fldSrc = objSrcValue.getClass().getDeclaredField(srcFieldName[1]);
 
 							fldSrc.setAccessible(true);
-							valSrc = fldSrc.get(objSrcValue);							
-							
+							valSrc = fldSrc.get(objSrcValue);
+
 							if (trgField.getType().getName().equals(fldSrc.getType().getName())) {
 								trgField.set(trgObject, valSrc);
 							}
-							
-							
+
 						} else {
-							
+
 							String fieldTypeTrgName = trgField.getType().getName();
-							if (fieldTypeTrgName.endsWith("Entity") 
-								|| fieldTypeTrgName.endsWith("Model")
-								|| fieldTypeTrgName.endsWith("DTO")) {
-								
-								Object objTrg = reflectUtil.getInstanceByClassName(fieldTypeTrgName);								
-								Field fld = objTrg.getClass().getDeclaredField("id");							
+							if (fieldTypeTrgName.endsWith("Entity") || fieldTypeTrgName.endsWith("Model")
+									|| fieldTypeTrgName.endsWith("DTO")) {
+
+								Object objTrg = reflectUtil.getInstanceByClassName(fieldTypeTrgName);
+								Field fld = objTrg.getClass().getDeclaredField("id");
 								fld.setAccessible(true);
 								fld.set(objTrg, objSrcValue);
 								trgField.set(trgObject, objTrg);
@@ -191,8 +224,7 @@ public class MapperUtil {
 							if (trgField.getType().getName().equals(srcField.get().getType().getName())) {
 								trgField.set(trgObject, objSrcValue);
 							}
-						} 
-											
+						}
 
 					}
 

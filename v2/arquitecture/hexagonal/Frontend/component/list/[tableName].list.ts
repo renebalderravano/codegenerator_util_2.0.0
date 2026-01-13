@@ -6,7 +6,7 @@ import { ImportsModule } from 'src/import';
 import { MessageService } from 'primeng/api';
 import { Table } from 'primeng/table';
 import { CommonComponent } from '@/core/services/common.component';
-import { PASCAL_CASE[tableName]Service } from '../../service/SNAKE_CASE[tableName].service';
+import { PASCAL_CASE[tableName]Service } from '../../../../service/SCHEMA_NAME/SNAKE_CASE[tableName].service';
 
 @Component({
   selector: 'app-KEBAB_CASE[tableName]-list',

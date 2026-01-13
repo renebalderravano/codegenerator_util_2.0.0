@@ -48,6 +48,7 @@ public abstract class BaseController<DTO> extends BaseUtil {
 	@CrossOrigin
 	@PostMapping(path = "/save")
 	public DTO save(@RequestBody DTO t) {
+		System.out.println("[Método /save] Se procede a querer guardar el objeto...");
 		return (DTO) callMethod(getService(), "save", new Object[] { t }, Object.class);
 	}
 
@@ -67,13 +68,21 @@ public abstract class BaseController<DTO> extends BaseUtil {
 	@CrossOrigin(origins = "*")
 	@GetMapping(path = "/findById/{id}")
 	public DTO findById(@PathVariable("id") Integer id) {
-		return (DTO) callMethod(getService(), "findById", new Object[] { id }, id.getClass());
+		System.out.println("[Método /findById] Se intenta obtener el objeto con id: " + id.toString());
+		Object result = callMethod(getService(), "findById", new Object[] { id }, id.getClass());
+		
+		//DTO result = (DTO) callMethod(getService(), "findById", new Object[] { id }, id.getClass());
+		System.out.println("resultado: " + result);
+		//System.out.println("result properties:" + result.getClass().getDeclaredMethods());
+		return (DTO) result;
+		
 	}
 	
 	@CrossOrigin(origins = "*")
 	@PostMapping(path = "/findBy")
 	public List<Object> findBy(@RequestBody Map<String, Object> src) {
-		return (List<Object>) callMethod(getService(), "findBy", new Object[] { src }, src.getClass());
+		List<Object> result = (List<Object>) callMethod(getService(), "findBy", new Object[] { (Map)src }, Map.class);
+		return result;
 	}
 
 	@CrossOrigin

@@ -136,7 +136,7 @@ public abstract class BaseService<T> extends BaseUtil {
 
 	protected Object getRepository() {
 		String sufix = entityClass.getSimpleName().replace("Entity", "");
-		String beanName = sufix.substring(0, 1).toLowerCase() + sufix.substring(1) + "RepositoryImpl";
+		String beanName = sufix.substring(0, 1).toLowerCase() + sufix.substring(1) + "DAOImpl";
 		service = applicationContext.getBean(beanName);
 		System.out.println(service.getClass().getName());
 		return service;
@@ -156,7 +156,7 @@ public abstract class BaseService<T> extends BaseUtil {
 
 		List<Object> le = validateFields(src);
 		if(le==null)		
-			return (List<Object>) super.prepareListToSendOfServiceToController(callMethod(getRepository(), "findBy", new Object[] { src }, Map.class), this.schema);
+			return (List<Object>) super.prepareListToSendOfServiceToController(callMethod(getRepository(), "findBy", new Object[] { (Map)src }, Map.class), this.schema);
 		else
 			return le;
 		

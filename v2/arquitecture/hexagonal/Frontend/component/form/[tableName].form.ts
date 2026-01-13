@@ -3,7 +3,7 @@ import { Router} from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ImportsModule } from 'src/import';
 import { MessageService } from 'primeng/api';
-import { PASCAL_CASE[tableName]Service } from '../../service/SNAKE_CASE[tableName].service';
+import { PASCAL_CASE[tableName]Service } from '../../../../service/SCHEMA_NAME/SNAKE_CASE[tableName].service';
 //importService
 
 @Component({
